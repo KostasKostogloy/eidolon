@@ -7,7 +7,7 @@ module Eidolon
       @content = content
     end
     
-    def to_hash
+    def to_hash(provider_type: nil)
       {
         role: @role,
         content: @content
@@ -126,7 +126,7 @@ module Eidolon
       @tool_calls = tool_calls
     end
     
-    def to_hash
+    def to_hash(provider_type: nil)
       hash = { role: @role }
       hash[:content] = @content if @content
       hash[:tool_calls] = @tool_calls if @tool_calls
@@ -148,7 +148,7 @@ module Eidolon
       @tool_call_id = tool_call_id
     end
     
-    def to_hash
+    def to_hash(provider_type: nil)
       {
         role: @role,
         content: @content,

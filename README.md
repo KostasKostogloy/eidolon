@@ -417,17 +417,24 @@ Check the `examples/` directory for more detailed examples:
 
 ## Development
 
-After checking out the repo, run:
+# 1. Clone repo and setup
+git clone <repo>
+cd eidolon
 
-```bash
+# 2. Install dependencies
 bundle install
-```
 
-To run tests:
+# 3. Setup environment
+cp .env.example .env
+# Edit .env with your API keys
 
-```bash
-bundle exec rspec
-```
+# 4. Start console
+bin/console
+
+# 5. Test with real API keys
+agent = create_agent(:openai)
+agent.chat("Hello!")
+
 
 ## Contributing
 
