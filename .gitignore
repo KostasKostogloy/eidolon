@@ -1,0 +1,142 @@
+# Byte-compiled / optimized / DLL files
+*.gem
+*.rbc
+/.config
+/coverage/
+/InstalledFiles
+/pkg/
+/spec/reports/
+/spec/tmp/
+/test/tmp/
+/test/version_tmp/
+/tmp/
+
+# Used by dotenv library to load environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Ignore bundler config
+/.bundle/
+
+# Ignore the default SQLite database
+/db/*.sqlite3
+/db/*.sqlite3-journal
+/db/*.sqlite3-*
+
+# Ignore all logfiles and tempfiles
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+
+# Ignore uploaded files in development
+/storage/*
+!/storage/.keep
+
+# Ignore master key for decrypting credentials and more
+/config/master.key
+
+# RubyMine
+/.idea
+*.iws
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*
+.\#*
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ruby version files
+.ruby-version
+.rbenv-version
+.rvmrc
+
+# Bundler
+vendor/bundle
+.bundle
+Gemfile.lock
+
+# RSpec
+.rspec_status
+
+# SimpleCov
+coverage/
+
+# YARD
+.yardoc
+doc/
+.yard/
+
+# Pry
+.pry_history
+
+# IRB
+.irb_history
+
+# Local development files
+*.local
+
+# API Keys and secrets (never commit these!)
+config/secrets.yml
+config/database.yml
+.env*
+secrets/
+keys/
+
+# Example files that might contain sensitive data
+examples/test_*
+examples/*_test*
+examples/private_*
+
+# Build artifacts
+*.o
+*.so
+*.dylib
+*.dll
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Cache directories
+.cache/
+.sass-cache/
+
+# Node modules (if any JavaScript tooling is used)
+node_modules/
+
+# Documentation build artifacts
+_site/
+.jekyll-cache/
+.jekyll-metadata
+
+# RubyGems packaging
+*.gem
+
+# Test artifacts
+*.log
+/.claude/
+/.tool-versions

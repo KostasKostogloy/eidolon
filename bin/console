@@ -1,0 +1,158 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+
+# Load environment variables from .env file
+begin
+  require "dotenv"
+  Dotenv.load
+rescue LoadError
+  # dotenv not available, continue without it
+end
+
+require "eidolon"
+
+# You can add fixtures and/or initialization code here to make experimenting
+# with your gem easier. You can also use a different console, if you like.
+
+# Helpful methods for console usage
+def create_agent(provider_type = :openai)
+  case provider_type
+  when :openai
+    unless ENV['OPENAI_API_KEY']
+      puts "⚠️  OPENAI_API_KEY not found. Set it in your .env file or environment."
+      return nil
+    end
+    
+    Class.new(Eidolon::Agent) do
+      def provider
+        Eidolon::Providers::OpenAI.new(
+          api_key: ENV['OPENAI_API_KEY'],
+          model: 'gpt-4o',
+          organization: ENV['OPENAI_ORGANIZATION']
+        )
+      end
+      
+      def instructions
+        "You are a helpful assistant for testing the Eidolon gem."
+      end
+    end.new
+  when :anthropic
+    unless ENV['ANTHROPIC_API_KEY']
+      puts "⚠️  ANTHROPIC_API_KEY not found. Set it in your .env file or environment."
+      return nil
+    end
+    
+    Class.new(Eidolon::Agent) do
+      def provider
+        Eidolon::Providers::Anthropic.new(
+          api_key: ENV['ANTHROPIC_API_KEY'],
+          model: 'claude-3-5-sonnet-20241022'
+        )
+      end
+      
+      def instructions
+        "You are Claude, helping test the Eidolon gem."
+      end
+    end.new
+  when :gemini
+    unless ENV['GEMINI_API_KEY']
+      puts "⚠️  GEMINI_API_KEY not found. Set it in your .env file or environment."
+      return nil
+    end
+    
+    Class.new(Eidolon::Agent) do
+      def provider
+        Eidolon::Providers::Gemini.new(
+          api_key: ENV['GEMINI_API_KEY'],
+          model: 'gemini-1.5-pro-002'
+        )
+      end
+      
+      def instructions
+        "You are Gemini, helping test the Eidolon gem."
+      end
+    end.new
+  when :openrouter
+    unless ENV['OPENROUTER_API_KEY']
+      puts "⚠️  OPENROUTER_API_KEY not found. Set it in your .env file or environment."
+      return nil
+    end
+    
+    Class.new(Eidolon::Agent) do
+      def provider
+        Eidolon::Providers::OpenRouter.new(
+          api_key: ENV['OPENROUTER_API_KEY'],
+          model: 'openai/gpt-4o',
+          site_url: ENV['OPENROUTER_SITE_URL'],
+          site_name: ENV['OPENROUTER_SITE_NAME']
+        )
+      end
+      
+      def instructions
+        "You are a helpful assistant via OpenRouter, testing the Eidolon gem."
+      end
+    end.new
+  end
+end
+
+# Example structured output class for testing
+class TestPerson
+  include Eidolon::StructuredOutput
+  
+  schema_property :name, description: "Person's name", required: true
+  schema_property :age, description: "Person's age", type: "integer"
+  schema_property :occupation, description: "Person's job"
+end
+
+puts "Eidolon Console"
+puts "==============="
+puts ""
+
+# Check if .env file exists and show status
+if File.exist?('.env')
+  puts "✅ .env file found and loaded"
+else
+  puts "⚠️  No .env file found. Copy .env.example to .env and add your API keys."
+end
+puts ""
+
+puts "Available helpers:"
+puts "- create_agent(:openai)     # Create OpenAI agent"
+puts "- create_agent(:anthropic)  # Create Anthropic agent" 
+puts "- create_agent(:gemini)     # Create Gemini agent"
+puts "- create_agent(:openrouter) # Create OpenRouter agent"
+puts ""
+puts "Example structured output class: TestPerson"
+puts ""
+
+# Show which API keys are available
+puts "API Keys Status:"
+puts "- OPENAI_API_KEY:     #{ENV['OPENAI_API_KEY'] ? '✅ Set' : '❌ Not set'}"
+puts "- ANTHROPIC_API_KEY:  #{ENV['ANTHROPIC_API_KEY'] ? '✅ Set' : '❌ Not set'}"
+puts "- GEMINI_API_KEY:     #{ENV['GEMINI_API_KEY'] ? '✅ Set' : '❌ Not set'}"
+puts "- OPENROUTER_API_KEY: #{ENV['OPENROUTER_API_KEY'] ? '✅ Set' : '❌ Not set'}"
+puts ""
+
+unless ENV['OPENAI_API_KEY'] || ENV['ANTHROPIC_API_KEY'] || ENV['GEMINI_API_KEY'] || ENV['OPENROUTER_API_KEY']
+  puts "🔧 Setup Instructions:"
+  puts "1. Copy .env.example to .env: cp .env.example .env"
+  puts "2. Edit .env and add your API keys"
+  puts "3. Restart the console: exit and run bin/console again"
+  puts ""
+end
+puts "Example usage:"
+puts "  agent = create_agent(:openai)"
+puts "  agent.chat('Hello!')"
+puts ""
+puts "  # With structured output:"
+puts "  person = agent.structured('My name is John, I am 30 and work as a developer', TestPerson)"
+puts ""
+puts "  # With attachments (uncomment and use real file path):"
+puts "  # image = Eidolon::Image.from_file('path/to/image.jpg')"
+puts "  # message = Eidolon::UserMessage.new(content: 'What is in this image?').add_attachment(image)"
+puts "  # agent.chat(message)"
+puts ""
+
+require "irb"
+IRB.start(__FILE__)
