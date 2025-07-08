@@ -20,7 +20,11 @@ module Eidolon
     end
     
     def chat(message)
-      user_message = UserMessage.new(content: message)
+      user_message = if message.is_a?(UserMessage)
+                       message
+                     else
+                       UserMessage.new(content: message)
+                     end
       @conversation_history << user_message
       
       loop do
