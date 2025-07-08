@@ -52,11 +52,18 @@ module Eidolon
       @conversation_history << user_message
       
       schema = output_class.get_schema
+      json_schema = schema.to_json_schema
+      
+      # OpenRouter/Azure requires all properties to be in the required array
+      if provider.is_a?(Eidolon::Providers::OpenRouter)
+        json_schema[:required] = json_schema[:properties].keys.map(&:to_s)
+      end
+      
       response_format = {
         type: "json_schema",
         json_schema: {
           name: schema.title || output_class.name,
-          schema: schema.to_json_schema,
+          schema: json_schema,
           strict: true
         }
       }

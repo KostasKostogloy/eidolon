@@ -30,7 +30,8 @@ module Eidolon
         schema = {
           type: "object",
           properties: {},
-          required: @required_fields
+          required: @required_fields,
+          additionalProperties: false
         }
         
         schema[:title] = @title if @title
