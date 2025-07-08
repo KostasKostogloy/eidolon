@@ -58,8 +58,8 @@ module Eidolon
       schema = output_class.get_schema
       json_schema = schema.to_json_schema
       
-      # OpenRouter/Azure requires all properties to be in the required array
-      if provider.is_a?(Eidolon::Providers::OpenRouter)
+      # OpenAI and OpenRouter/Azure require all properties to be in the required array when using strict mode
+      if provider.is_a?(Eidolon::Providers::OpenAI) || provider.is_a?(Eidolon::Providers::OpenRouter)
         json_schema[:required] = json_schema[:properties].keys.map(&:to_s)
       end
       
